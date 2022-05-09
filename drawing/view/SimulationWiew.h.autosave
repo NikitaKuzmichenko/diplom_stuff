@@ -1,0 +1,17 @@
+#ifndef SIMULATIONWIEW_H
+#define SIMULATIONWIEW_H
+
+#include <simulation/Simulation.h>
+
+
+
+class SimulationWiew{
+public:
+    SimulationWiew();
+    
+    
+private:
+    Simulation *simulation;
+};
+
+#endif // SIMULATIONWIEW_H
