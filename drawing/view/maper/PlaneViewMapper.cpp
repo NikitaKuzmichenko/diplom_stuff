@@ -1,30 +1,23 @@
 #include "PlaneViewMapper.h"
-
+#include "QDebug"
+#include <utils/GeodesicUtils.h>
 PlaneViewMapper::PlaneViewMapper(){}
 
 PlaneViewMapper::PlaneViewMapper(QRect boundingRect){
     this->boundingRect = boundingRect;
 }
 
-PlaneViewMapper::~PlaneViewMapper(){
-    delete mapImg;
-}
-
-void PlaneViewMapper::setImg(QString path){
-    mapImg = new QImage(path);
-    this->boundingRect = mapImg->rect();
-}
-
-void PlaneViewMapper::setImg(QImage *img){
-    mapImg = img;
-    this->boundingRect = mapImg->rect();
-}
-
-QImage *PlaneViewMapper::getImg(){
-    return mapImg;
+void PlaneViewMapper::setBoundingRect(QImage value){
+    this->boundingRect = value.rect();
 }
 
 void PlaneViewMapper::calculateUnitPerPixeRatio(){
-    unitPerPixelY = (elevationMap->getMaxLatDeg() - elevationMap->getMinLatDeg()) / mapImg->height();
-    unitPerPixelX = (elevationMap->getMaxLongDeg() - elevationMap->getMinLongDeg()) / mapImg->width();
+    unitPerPixelY = GeodesicUtils::toRad(elevationMap->getMaxLatDeg() - elevationMap->getMinLatDeg()) / boundingRect.height();
+    unitPerPixelX = GeodesicUtils::toRad(elevationMap->getMaxLongDeg() - elevationMap->getMinLongDeg()) / boundingRect.width();
+
+    minXValue = GeodesicUtils::toRad(elevationMap->getMinLongDeg());
+    maxXValue = GeodesicUtils::toRad(elevationMap->getMaxLongDeg());
+
+    minYValue = GeodesicUtils::toRad(elevationMap->getMinLatDeg());
+    maxYValue = GeodesicUtils::toRad(elevationMap->getMaxLatDeg());
 }

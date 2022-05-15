@@ -38,22 +38,22 @@ void GeographicGridLayer::draw(){
         text->setPlainText(angle);
         text->setRotation(-90);
 
-        Utils::fromUTMToGK(currentLat,maxYValue,x,y);
-        y.append("km");
+//        Utils::fromUTMToGK(currentLat,maxYValue,x,y);
+//        y.append("km");
 
-        QGraphicsTextItem *kmText = new QGraphicsTextItem();
-        kmText->setX(wight + 10);
-        if(i==0){
-            kmText->setY(pixelsPerStep * i + yIndent + 20);
-        } else if(i== linesPerYAxis - 1){
-            kmText->setY(pixelsPerStep * i + yIndent - 10);
-        } else{
-            kmText->setY(pixelsPerStep * i + yIndent);
-        }
-        kmText->setPlainText(y);
-        kmText->setRotation(-90);
+//        QGraphicsTextItem *kmText = new QGraphicsTextItem();
+//        kmText->setX(wight + 10);
+//        if(i==0){
+//            kmText->setY(pixelsPerStep * i + yIndent + 20);
+//        } else if(i== linesPerYAxis - 1){
+//            kmText->setY(pixelsPerStep * i + yIndent - 10);
+//        } else{
+//            kmText->setY(pixelsPerStep * i + yIndent);
+//        }
+//        kmText->setPlainText(y);
+//        kmText->setRotation(-90);
 
-        addItem(kmText);
+//        addItem(kmText);
         addItem(item);
         addItem(text);
     }
@@ -67,35 +67,35 @@ void GeographicGridLayer::draw(){
 
         double currentLong = minXValue + degPerPixelX * pixelsPerStep * i;
 
-        Utils::fromUTMToGK(currentLong + 180,minXValue,x,y);
-        x.append("km");
+//        Utils::fromUTMToGK(currentLong + 180,minXValue,x,y);
+//        x.append("km");
 
         QString angle;
         angle.setNum(currentLong,10,2);
         angle.append("°");
 
         QGraphicsTextItem *degText = new QGraphicsTextItem();
-        QGraphicsTextItem *kmText = new QGraphicsTextItem();
+        //QGraphicsTextItem *kmText = new QGraphicsTextItem();
 
         if(i==0){
             degText->setX(pixelsPerStep * i - xIndent + 10);
-            kmText->setX(pixelsPerStep * i - xIndent + 10);
+            //kmText->setX(pixelsPerStep * i - xIndent + 10);
         } else if(i == linesPerXAxis - 1){
             degText->setX(pixelsPerStep * i - xIndent - 10);
-            kmText->setX(pixelsPerStep * i - xIndent - 25);
+            //kmText->setX(pixelsPerStep * i - xIndent - 25);
         }else{
             degText->setX(pixelsPerStep * i - xIndent);
-            kmText->setX(pixelsPerStep * i - xIndent);
+            //kmText->setX(pixelsPerStep * i - xIndent);
         }
 
-        degText->setY(-yIndent);
-        kmText->setY(hieght);
+       degText->setY(-yIndent);
+       degText->setPlainText(angle);
 
-        degText->setPlainText(angle);
-        kmText->setPlainText(x);
-
+//        kmText->setPlainText(x);
+//        kmText->setY(hieght);
+//        addItem(kmText);
         addItem(line);
         addItem(degText);
-        addItem(kmText);
+
     }
 }

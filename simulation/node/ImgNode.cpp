@@ -1,19 +1,19 @@
 #include "ImgNode.h"
 
 ImgNode::ImgNode() : NodePoint(){
-    type = IMG_NODE;
+    type = NP::IMG_NODE;
 }
 
 ImgNode::ImgNode(PhysicalPoint *point) : NodePoint(point){
-    type = IMG_NODE;
+    type = NP::IMG_NODE;
 }
 
 ImgNode::ImgNode(double longitude, double latitude, double height) : NodePoint(longitude,latitude,height) {
-     type = IMG_NODE;
+     type = NP::IMG_NODE;
 }
 
 ImgNode::ImgNode(PhysicalPoint *point, double v, double azim, double len, double width,QString path) : NodePoint(point){
-    type = IMG_NODE;
+    type = NP::IMG_NODE;
     this->v = v;
     this->azim = azim;
     this->len = len;
@@ -22,7 +22,7 @@ ImgNode::ImgNode(PhysicalPoint *point, double v, double azim, double len, double
 }
 
 ImgNode::ImgNode(double longitude, double latitude, double height, double v, double azim, double len, double width,QString path) : NodePoint(longitude,latitude,height){
-    type = IMG_NODE;
+    type = NP::IMG_NODE;
     this->v = v;
     this->azim = azim;
     this->len = len;
@@ -69,4 +69,13 @@ QString ImgNode::getPath(){
 
 void ImgNode::setPath(QString value){
     path = value;
+}
+
+QString ImgNode::toString(){
+    return NodePoint::toString()
+        .append("V = " + QString::number(v)).append(" ")
+        .append("azim = " + QString::number(azim)).append(" ")
+        .append("len = " + QString::number(len)).append(" ")
+        .append("width = " + QString::number(width)).append(" ")
+        .append("path = " + path).append(" ");
 }

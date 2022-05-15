@@ -5,7 +5,13 @@
 
 #include <QMap>
 
-enum LayerName{backgroud,grid,text,lines,node_point};
+enum LayerName{
+    backgroud,
+    grid,
+    text,
+    line,
+    node_point
+};
 
 class LayerManager{
 public:

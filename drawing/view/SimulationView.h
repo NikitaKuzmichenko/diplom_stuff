@@ -1,59 +1,66 @@
-#ifndef SIMULATIONWIEW_H
-#define SIMULATIONWIEW_H
+#ifndef SIMULATIONVIEW_H
+#define SIMULATIONVIEW_H
 
+#include <drawing/item/segment/DisplayedSegment.h>
+#include <drawing/item/segment/DisplayedSegmentCreator.h>
+#include <drawing/item/node/DisplayedNodeCreator.h>
 #include <simulation/Simulation.h>
 #include <drawing/layers/LayerManager.h>
-#include <drawing/item/point/DisplayedNodePoint.h>
-#include <drawing/item/point/NodeCreator.h>
-#include <drawing/item/line/DisplayedSegment.h>
-#include <drawing/item/line/SegmentCreator.h>
-
+#include <drawing/item/wayPoint/DisplayedWayPoint.h>
+#include <drawing/item/wayPoint/DisplayedWayPointCreator.h>
 
 class SimulationView{
 public:
-
-    SimulationView(Simulation *simulation,LayerManager *layerManager,PlaneViewMapper *map);
+    SimulationView(Simulation *simulation,LayerManager *layerManager,ViewMapper *mapper);
     ~SimulationView();
-// остаётся здесь -- создание новой точки в UI
-    DisplayedNodePoint *addPoint(QPointF pos,NodePointType type);
-    DisplayedNodePoint *addPointToLine(DisplayedSegment *line,QPointF pos,NodePointType type);
-    DisplayedSegment *createLineWithLastPoint();
-//===========================================================================
-// на разных проекциях разные конверисии
-    void evaluatePoint(QPointF pos,DisplayedNodePoint *item);  
-// удаление и поиск по изображению везде одинаково
-    void deletePoint(DisplayedNodePoint *point);
 
-    DisplayedNodePoint *findPointByMainItem(QGraphicsItem *item);
-    DisplayedSegment *findLineByMainItem(QGraphicsItem *item);
+    DisplayedNode *createTurnPoint(QPointF pos,NP::NodePointType type);
+    DisplayedNode *createTurnPoint(QPointF pos,NP::NodePointType type,long positioInList);
 
-    void updateRelatedLines(DisplayedItem *point);
-//============
+    DisplayedNode *addPointToSegment(QPointF pos,NP::NodePointType type,long segmentId);
+    DisplayedNode *addTurnPointToSegment(QPointF pos,NP::NodePointType type,long segmentId);
+    
+    DisplayedNode *findNodeByMainItem(QGraphicsItem *item);
+    DisplayedSegment *findSegmentByMainItem(QGraphicsItem *item);
+    DisplayedWayPoint *findWayPointByMainItem(QGraphicsItem *item);
 
-    PlaneViewMapper *getMap();
-    void setMap(PlaneViewMapper *value);
+    void deleteNode(DisplayedNode *nodeItem);
+    virtual bool updateNode(DisplayedNode *selectedNode,QPointF pos) = 0;
+    
+    virtual bool moveNode(DisplayedNode *selectedNode, QPointF newPos) = 0;
 
-private:
-    // остаётся здесь -- создание объетов точек для отобаржения и лиинй меджу точками
-    DisplayedSegment *createLineBetweenPoints(DisplayedNodePoint *startPoint, DisplayedNodePoint *endPoint);
-    DisplayedSegment *createLineBetweenPoints(DisplayedNodePoint *startPoint, DisplayedNodePoint *endPoint,long positioInList);
+    virtual void loadAllFromSimulation() = 0;
+    virtual void loadPointFromSimulation(long id) = 0;
+    virtual void loadSegmentFromSimulation(long id) = 0;
+    virtual void loadWayPointFromSimulation(long id) = 0;
 
-    DisplayedNodePoint *createPoint(QPointF pos,NodePointType type);
-    DisplayedNodePoint *createPoint(QPointF pos,NodePointType type,long positioInList);
+protected:
 
-    QVector<DisplayedSegment *> getRelatedLines(DisplayedNodePoint *point);
-//===============
-// общая структура для всех
-    NodeCreator *pointCreator = new NodeCreator();
-    SegmentCreator *lineCreator = new SegmentCreator();
+    DisplayedSegment *createSegment(DisplayedNode *startPoint, DisplayedNode *endPoint);
+    DisplayedSegment *createSegment(DisplayedNode *startPoint, DisplayedNode *endPoint,long positioInList);
 
-    QVector<DisplayedSegment *> *lines;
-    QVector<DisplayedNodePoint *> *points;
+    DisplayedNode *createPoint(NodePoint *realPoint);
+    DisplayedNode *createPoint(NodePoint *realPoint,QPointF pos);
+    DisplayedWayPoint *createWayPoint(WayPoint *realPoint);
+
+    void updateRelatedSegments(DisplayedNode *point);
+    QVector<DisplayedSegment *> getRelatedSegments(DisplayedNode *point);
+
+    virtual PhysicalPoint *convertPositionTopoint(QPointF pos) = 0;
+    virtual QPointF getPositionFromPoint(PhysicalPoint *pos) = 0;
+
+    DisplayedNodeCreator *nodeCreator = new DisplayedNodeCreator();
+    DisplayedSegmentCreator *segmentCreator = new DisplayedSegmentCreator();
+    DisplayedWayPointCreator *wayPointCreator = new DisplayedWayPointCreator();
+
+    QVector<DisplayedSegment *> *segments;
+    QVector<DisplayedNode *> *nodes;
+    QVector<DisplayedWayPoint *> *wayPoints;
 
     Simulation *simulation;
     LayerManager *layerManager;
 
-    PlaneViewMapper *map;
+    ViewMapper *mapper;
 };
 
-#endif // SIMULATIONWIEW_H
+#endif // SIMULATIONVIEW_H

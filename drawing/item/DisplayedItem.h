@@ -3,8 +3,14 @@
 
 #include <QGraphicsPixmapItem>
 #include <QString>
-
 #include <simulation/map/PhysicalPoint.h>
+
+enum ItemType{
+    Udefinde,
+    SegmentItem,
+    NodeItem,
+    WayPointItem
+};
 
 class DisplayedItem{
 public:
@@ -28,6 +34,7 @@ public:
     void setName(QString &value);
 
 protected:
+    ItemType type = ItemType::Udefinde;
     QString name;
     QGraphicsItem *mainItem = nullptr;
     QGraphicsTextItem *text = nullptr;

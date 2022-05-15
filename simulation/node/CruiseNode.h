@@ -18,6 +18,7 @@ public:
     double getV();
     void setV(double value);
 
+    QString toString();
 private:
     double v;
 };

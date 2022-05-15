@@ -1,15 +1,17 @@
 #ifndef NODEPOINTREADERWRITER_H
 #define NODEPOINTREADERWRITER_H
 
-#include <QString>
 #include "NodePoint.h"
+
+#include <QString>
+//#include "NodePoint.h"
 
 const QString climmbNode = "CLMB";
 const QString cruiseNode = "CRUS";
-const QString demNode = "DEM";
+const QString demNode = "DEM ";
 const QString descendNode = "DESC";
-const QString finishNode = "FIN";
-const QString imgNode = "IMG";
+const QString finishNode = "FIN ";
+const QString imgNode = "IMG ";
 const QString markerNode = "MARK";
 const QString takeoffNode = "TKOF";
 const QString turnNode = "TURN";
@@ -37,7 +39,10 @@ public:
     NodePoint *getPointFromString(const QString string);
 
 private:
-    QMap<QString,NodePointType> *nodeNames;
+    int heightPrecision = 6;
+    int lowPrecision = 3;
+    QString DoubleToString(double number,int precision);
+    QMap<QString,NP::NodePointType> *nodeNames;
 };
 
 #endif // NODEPOINTREADERWRITER_H

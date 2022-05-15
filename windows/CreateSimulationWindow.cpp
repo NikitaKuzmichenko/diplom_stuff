@@ -13,7 +13,7 @@ CreateSimulationWindow::CreateSimulationWindow(QWidget *parent) : QMainWindow(pa
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    simulationMap = new PlaneViewMapper();
+    planeViewMapper = new PlaneViewMapper();
     scene = new QGraphicsScene();
     layer = new GeographicGridLayer(1);
 
@@ -37,7 +37,9 @@ CreateSimulationWindow::~CreateSimulationWindow(){
 }
 
 void CreateSimulationWindow::on_select_img_clicked(){
-    QString fileName = QFileDialog::getOpenFileName(this,"select map image","C:\\Users\\nikit\\OneDrive\\Рабочий стол","Images (*.png *.xpm *.jpg)");
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    "select map image","C:\\Users\\nikit\\OneDrive\\Рабочий стол",
+                                                    "Images (*.png *.xpm *.jpg)");
 
     if(!fileName.isEmpty()){
         ui->map_img_path->setText(fileName);
@@ -45,7 +47,8 @@ void CreateSimulationWindow::on_select_img_clicked(){
         QImage *img = new QImage(fileName);
         imgPixelMap->setPixmap(QPixmap::fromImage(*img));
 
-        simulationMap->setImg(img);
+        planeViewMapper->setBoundingRect(*img);
+        bgImg = img;
 
         QRectF rect(0,0,img->width(),img->height());
         rect.adjust(-roundSceneIndent,-roundSceneIndent,roundSceneIndent,roundSceneIndent);
@@ -53,8 +56,8 @@ void CreateSimulationWindow::on_select_img_clicked(){
 
         if(mapPresent){
 
-            layer->setWight(simulationMap->getImg()->width());
-            layer->setHieght(simulationMap->getImg()->height());
+            layer->setWight(planeViewMapper->getBoundingRect().width());
+            layer->setHieght(planeViewMapper->getBoundingRect().height());
             layer->setXIndent(roundSceneIndent);
             layer->setYIndent(roundSceneIndent);
 
@@ -63,7 +66,7 @@ void CreateSimulationWindow::on_select_img_clicked(){
             layer->draw();
 
 
-            simulationMap->calculateUnitPerPixeRatio();
+            planeViewMapper->calculateUnitPerPixeRatio();
         }
 
         ui->graphicsView->show();
@@ -97,8 +100,8 @@ void CreateSimulationWindow::on_select_model_clicked(){
 
             if(this->imgPresent){
 
-                layer->setWight(simulationMap->getImg()->width());
-                layer->setHieght(simulationMap->getImg()->height());
+                layer->setWight(planeViewMapper->getBoundingRect().width());
+                layer->setHieght(planeViewMapper->getBoundingRect().height());
                 layer->setXIndent(roundSceneIndent);
                 layer->setYIndent(roundSceneIndent);
 
@@ -108,7 +111,7 @@ void CreateSimulationWindow::on_select_model_clicked(){
             }
 
             mapPresent = true;
-            simulationMap->setElevationMap(elevationMap);
+            planeViewMapper->setElevationMap(elevationMap);
             ui->elevation_model_path->setText(fileName);
         }
     }
@@ -117,7 +120,7 @@ void CreateSimulationWindow::on_select_model_clicked(){
 void CreateSimulationWindow::on_start_simulation_clicked(){
     if(mapPresent && imgPresent){
 
-        SimulationWindow *simulation = new SimulationWindow(nullptr,manager,simulationMap);
+        SimulationWindow *simulation = new SimulationWindow(nullptr,manager,planeViewMapper,*bgImg);
         simulation->setStartWindow(startWindow);
         simulation->showMaximized();
 

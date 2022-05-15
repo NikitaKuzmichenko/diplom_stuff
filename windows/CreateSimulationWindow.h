@@ -3,12 +3,9 @@
 
 #include <QGraphicsScene>
 #include <QMainWindow>
-
 #include <drawing/view/maper/PlaneViewMapper.h>
-
 #include <drawing/layers/GeographicGridLayer.h>
 #include <drawing/layers/VisibleLayer.h>
-
 #include <settings/SettingsManager.h>
 
 namespace Ui {
@@ -17,7 +14,6 @@ class CreateSimulationWindow;
 
 class CreateSimulationWindow : public QMainWindow{
     Q_OBJECT
-
 public:
     explicit CreateSimulationWindow(QWidget *parent = nullptr);
     ~CreateSimulationWindow();
@@ -29,14 +25,12 @@ public:
     void setStartWindow(QMainWindow *value);
 
 private slots:
-
     void on_select_img_clicked();
     void on_select_model_clicked();
     void on_start_simulation_clicked();
     void on_back_to_menu_clicked();
 
 private:
-
     const int roundSceneIndent = 30;
 
     QMainWindow * startWindow;
@@ -45,9 +39,11 @@ private:
     bool imgPresent = false;
     bool mapPresent = false;
 
+    QImage *bgImg;
+
     GeographicGridLayer *layer;
     QGraphicsScene *scene;
-    PlaneViewMapper *simulationMap;
+    PlaneViewMapper *planeViewMapper;
 
     QGraphicsPixmapItem * imgPixelMap;
 

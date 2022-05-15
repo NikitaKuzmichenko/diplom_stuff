@@ -11,7 +11,6 @@ public:
     MarkerNode();
     MarkerNode(PhysicalPoint *point);
     MarkerNode(double longitude,double latitude,double height);
-
 };
 
 #endif // MARKERNODE_H

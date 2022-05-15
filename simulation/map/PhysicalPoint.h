@@ -1,6 +1,9 @@
 #ifndef PHYSICALPOINT_H
 #define PHYSICALPOINT_H
 
+/*!
+    Данные хранятся в радианах!!!!!
+*/
 class PhysicalPoint{
 public:
 

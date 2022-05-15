@@ -11,6 +11,11 @@ DisplayedItem::~DisplayedItem(){
     delete text;
 }
 
+void DisplayedItem::createDescription()
+{
+
+}
+
 QGraphicsItem *DisplayedItem::getMainItem() {
     return mainItem;
 }

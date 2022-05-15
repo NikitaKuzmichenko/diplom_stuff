@@ -1,10 +1,22 @@
 #include "Segment.h"
+#include <QVector>
+#include <simulation/node/ClimbNode.h>
+#include <simulation/node/DescentNode.h>
+#include <utils/GeodesicUtils.h>
 
-Segment::Segment(){}
+Segment::Segment(){
+    nodes = new  QVector<NodePoint *>();
+}
 
 Segment::Segment(NodePoint *startPoint, NodePoint *endPoint){
     this->startPoint = startPoint;
     this->endPoint = endPoint;
+
+    nodes = new  QVector<NodePoint *>();
+}
+
+Segment::~Segment(){
+    delete nodes;
 }
 
 NodePoint *Segment::getStartPoint() {
@@ -29,4 +41,105 @@ long Segment::getId(){
 
 void Segment::setId(long value){
     id = value;
+}
+
+void Segment::addNodePoint(NodePoint *point){
+    nodes->append(point);
+}
+
+void Segment::addNodePoint(NodePoint *point, long position){
+    nodes->insert(position,point);
+}
+
+bool Segment::removeNodePoint(long pointId){
+    for(int i=0;i<nodes->length();i++){
+        if(nodes->at(i)->getId() == pointId){
+            nodes->removeAt(i);
+            return true;
+        }
+    }
+    return  false;
+}
+
+bool Segment::containNode(long nodeId){
+    if(startPoint->getId() == nodeId){
+        return  true;
+    }
+    if(endPoint->getId() == nodeId){
+        return  true;
+    }
+
+    return (getNodePoint(nodeId) != nullptr);
+}
+
+NodePoint *Segment::getNodePoint(long pointId){
+    for(int i=0;i<nodes->length();i++){
+        if(nodes->at(i)->getId() == pointId){
+            return nodes->at(i);
+        }
+    }
+    return  nullptr;
+}
+
+
+void Segment::sortNodesByDistanceFromStart(){
+      std::sort(nodes->begin(),nodes->end(),
+                [](NodePoint *node1, NodePoint *node2)->bool
+                  {
+                      return node1->getDistanceFromSegmentStart() < node2->getDistanceFromSegmentStart();
+                  });
+}
+
+void Segment::clearSegment(){
+    nodes->clear();
+}
+
+void Segment::calculateDistance(){
+    this->lenght = GeodesicUtils::getDistanceBetweenPoints(startPoint->getPoint(),endPoint->getPoint());
+    for(int i=0;i<nodes->length();i++){
+        NodePoint *p =nodes->at(i);
+        p->setDistanceFromSegmentStart(GeodesicUtils::getDistanceBetweenPoints(startPoint->getPoint(),p->getPoint()));
+    }
+}
+
+void Segment::calculateHieghtChane(){
+    for(int i=0;i<nodes->length();i++){
+
+        NodePoint *nextNode;
+        if(i == nodes->length() - 1){
+              nextNode = endPoint;
+        }else{
+            nextNode = nodes->at(i+1);
+        }
+
+        NodePoint *p = nodes->at(i);
+        if(p->type == NP::CLIMB_NODE ){
+           ((ClimbNode*)p)->setTheta(GeodesicUtils::getPitсh(p->getPoint(),nextNode->getPoint()));
+        }
+        if(p->type == NP::DESCENT_NODE){
+           ((DescentNode*)p)->setTheta(GeodesicUtils::getPitсh(p->getPoint(),nextNode->getPoint()));
+        }
+    }
+}
+
+void Segment::calculateL0(){
+
+}
+
+QString Segment::toString(){
+    QString result = QString();
+    result.append("Segment :");
+    result.append("id = "+ QString::number(id));
+    result.append("lenght = " + QString::number(lenght));
+    result.append("Start point : " + startPoint->toString());
+    result.append("End point : " + endPoint->toString());
+    return result;
+}
+
+QVector<NodePoint *> *Segment::getNodes(){
+    return nodes;
+}
+
+void Segment::setNodes(QVector<NodePoint *> *value){
+    nodes = value;
 }

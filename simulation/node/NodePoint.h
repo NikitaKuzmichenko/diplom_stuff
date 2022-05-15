@@ -3,24 +3,8 @@
 
 #include <QString>
 #include <simulation/map/PhysicalPoint.h>
+#include <simulation/node/NodePointType.h>
 
-enum NodePointType {
-    UNDEFINED_NODE,
-    TAKEOFF_NODE,
-    FINISH_NODE,
-    TURN_NODE,
-    EVENT_NODE,
-    CLIMB_NODE,
-    DESCENT_NODE,
-    CRUISE_NODE,
-    MARKER_NODE,
-    IMG_NODE,
-    DEM_NODE
-};
-
-/*
- * узловая точка
-*/
 class NodePoint{
 public:
 
@@ -40,14 +24,25 @@ public:
 
     void generateDefaultName();
 
-    NodePointType type = UNDEFINED_NODE; // тип точки
+    NP::NodePointType type = NP::UNDEFINED_NODE; // тип точки
+
+    bool isTurnNode();
+    bool isUdefinedNode();
+
+    double getDistanceFromSegmentStart();
+    void setDistanceFromSegmentStart(double value);
+
+    virtual QString toString();
+
+    long getSegmentId();
+    void setSegmentId(long value);
 
 protected:
-    long id = 0; // ид точки
+    long id = 0;
+    long segmentId = -1;
     QString *name = nullptr; // отображаемое название точки
-
     PhysicalPoint *point; // широта, долгота, высота точки
-
+    double distanceFromSegmentStart = -1; // расстояние от начала сегмета, -1 если не назначено
 };
 
 #endif // NODEPOINT_H

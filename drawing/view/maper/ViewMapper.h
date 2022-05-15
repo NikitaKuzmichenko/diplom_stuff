@@ -6,24 +6,26 @@
 
 class ViewMapper{
 public:
+    ViewMapper();
+    virtual ~ViewMapper();
     ElevationMap *getElevationMap();
     void setElevationMap(ElevationMap *value);
 
     QRect getBoundingRect();
     void setBoundingRect(QRect value);
 
-    double getUnitPerPixelY();
-    void setUnitPerPixelY(double value);
-
-    double getUnitPerPixelX();
-    void setUnitPerPixelX(double value);
-
     virtual void calculateUnitPerPixeRatio() = 0;
-protected:
 
     double unitPerPixelY;
     double unitPerPixelX;
 
+    double minXValue;
+    double maxXValue;
+
+    double minYValue;
+    double maxYValue;
+
+protected:
     QRect boundingRect;
     ElevationMap *elevationMap;
 };

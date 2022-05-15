@@ -31,6 +31,7 @@ public:
     QString getPath();
     void setPath(QString value);
 
+    QString toString();
 private:
 
     double  v;    // скорость

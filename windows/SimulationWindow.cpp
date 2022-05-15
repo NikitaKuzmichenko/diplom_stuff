@@ -3,10 +3,14 @@
 
 #include <QMetaEnum>
 #include <QPixmap>
-#include <drawing/view/ClickablePlane.h>
+#include <drawing/scene/ClicablePlaneScene.h>
 #include <simulation/Simulation.h>
 
-SimulationWindow::SimulationWindow(QWidget *parent, SettingsManager *manager, PlaneViewMapper *simulationMap) : QMainWindow(parent),ui(new Ui::SimulationWindow){
+SimulationWindow::SimulationWindow(QWidget *parent,
+                                   SettingsManager *manager,
+                                   PlaneViewMapper *simulationMap,
+                                   QImage bgImg) : QMainWindow(parent),ui(new Ui::SimulationWindow){
+
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
 
@@ -16,18 +20,19 @@ SimulationWindow::SimulationWindow(QWidget *parent, SettingsManager *manager, Pl
 
     Simulation *simulation = new Simulation();
 
-    clickablePlane = new ClickablePlane(layerManager,new SimulationView(simulation,layerManager,simulationMap));
-    clickablePlane->setAction(Actions::ActionType::addItem);
+    clickablePlane = new ClicablePlaneScene(new SimulationViewTest(simulation,layerManager,simulationMap),layerManager);
+    ClicableScene::action = Actions::ActionType::addItem;
 
     ViewSettings();
 
-    QImage img = *simulationMap->getImg();
-    QRectF rect(0,0,img.width(),img.height());
-    rect.adjust(-ClickablePlane::roundSceneIndent,-ClickablePlane::roundSceneIndent,ClickablePlane::roundSceneIndent,ClickablePlane::roundSceneIndent);
+    QRectF rect(0,0,bgImg.width(),bgImg.height());
+
+    rect.adjust(-30,-30,30,30);
+
     clickablePlane->setSceneRect(rect);
 
-    initBackground(img);
-    initGrlidLayer(img);
+    initBackground(bgImg);
+    initGrlidLayer(bgImg);
 
     QList<QGraphicsItem *> node_items;
     VisibleLayer *nodePointsLayer = new VisibleLayer(LayerName::node_point,true);
@@ -40,9 +45,9 @@ SimulationWindow::SimulationWindow(QWidget *parent, SettingsManager *manager, Pl
     layerManager->addlayer(LayerName::text,text_layer);
 
     QList<QGraphicsItem *> lines_items;
-    VisibleLayer *lines_layer = new VisibleLayer(LayerName::lines,true);
+    VisibleLayer *lines_layer = new VisibleLayer(LayerName::line,true);
     lines_layer->setItemGroupe(clickablePlane->createItemGroup(text_items));
-    layerManager->addlayer(LayerName::lines,lines_layer);
+    layerManager->addlayer(LayerName::line,lines_layer);
 
 
     ui->geo_base_en->setCheckState(Qt::CheckState::Checked);
@@ -55,6 +60,7 @@ SimulationWindow::SimulationWindow(QWidget *parent, SettingsManager *manager, Pl
     ui->action_type->addItem(QMetaEnum::fromType<Actions::ActionType>().valueToKey(1));
     ui->action_type->addItem(QMetaEnum::fromType<Actions::ActionType>().valueToKey(2));
     ui->action_type->addItem(QMetaEnum::fromType<Actions::ActionType>().valueToKey(3));
+    ui->action_type->addItem(QMetaEnum::fromType<Actions::ActionType>().valueToKey(4));
 
     ui->planeView->show();
 }
@@ -95,21 +101,21 @@ void SimulationWindow::on_text_stateChanged(int arg1){
 
 void SimulationWindow::on_lines_stateChanged(int arg1){
     if(arg1 == Qt::CheckState::Unchecked){
-        layerManager->getLayerByName(LayerName::lines)->hideGroupe();
+        layerManager->getLayerByName(LayerName::line)->hideGroupe();
     }else{
-        layerManager->getLayerByName(LayerName::lines)->displayGrouope();
+        layerManager->getLayerByName(LayerName::line)->displayGrouope();
     }
 }
 
 void SimulationWindow::on_action_type_activated(int index){
-     clickablePlane->setAction(Actions::ActionType(index));
+     ClicableScene::action =Actions::ActionType(index);
 }
 
 
 void SimulationWindow::ViewSettings(){
     ui->planeView->setRenderHint(QPainter::Antialiasing);
     ui->planeView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->planeView->setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
+    ui->planeView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->planeView->setScene(clickablePlane);
 
 }
@@ -128,8 +134,8 @@ void SimulationWindow::initGrlidLayer(QImage img){
     gridLayer->setMinXValue(planeView->getElevationMap()->getMinLongDeg());
     gridLayer->setWight(img.width());
     gridLayer->setHieght(img.height());
-    gridLayer->setXIndent(ClickablePlane::roundSceneIndent);
-    gridLayer->setYIndent(ClickablePlane::roundSceneIndent);
+    gridLayer->setXIndent(30);
+    gridLayer->setYIndent(30);
     gridLayer->setPen(settingsManager->getGrid_pen());
     gridLayer->draw();
 

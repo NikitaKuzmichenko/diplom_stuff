@@ -15,16 +15,16 @@
 
 NodePointReaderWriter::NodePointReaderWriter(){
 
-    nodeNames = new QMap<QString,NodePointType>;
-    nodeNames->insert(climmbNode,NodePointType::CLIMB_NODE);
-    nodeNames->insert(cruiseNode,NodePointType::CRUISE_NODE);
-    nodeNames->insert(demNode,NodePointType::DEM_NODE);
-    nodeNames->insert(descendNode,NodePointType::DESCENT_NODE);
-    nodeNames->insert(finishNode,NodePointType::FINISH_NODE);
-    nodeNames->insert(imgNode,NodePointType::IMG_NODE);
-    nodeNames->insert(markerNode,NodePointType::MARKER_NODE);
-    nodeNames->insert(takeoffNode,NodePointType::TAKEOFF_NODE);
-    nodeNames->insert(turnNode,NodePointType::TURN_NODE);
+    nodeNames = new QMap<QString,NP::NodePointType>;
+    nodeNames->insert("CLMB",NP::CLIMB_NODE);
+    nodeNames->insert("CRUS",NP::CRUISE_NODE);
+    nodeNames->insert("DEM",NP::DEM_NODE);
+    nodeNames->insert("DESC",NP::DESCENT_NODE);
+    nodeNames->insert("FIN",NP::FINISH_NODE);
+    nodeNames->insert("IMG",NP::IMG_NODE);
+    nodeNames->insert("MARK",NP::MARKER_NODE);
+    nodeNames->insert("TKOF",NP::TAKEOFF_NODE);
+    nodeNames->insert("TURN",NP::TURN_NODE);
 }
 
 NodePointReaderWriter::~NodePointReaderWriter(){
@@ -33,116 +33,115 @@ NodePointReaderWriter::~NodePointReaderWriter(){
 
 QString NodePointReaderWriter::convertPointToString(const NodePoint *point){
     QString result;
-
     switch (point->type) {
-        case CLIMB_NODE : {
+        case NP::CLIMB_NODE : {
             ClimbNode *node = (ClimbNode*)point;
 
             result.append(climmbNode).append(" ");
-            result.append(QString::number(node->getPoint()->getLongitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getLatitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getHight())).append(" ");
-            result.append(QString::number(node->getV())).append(" ");
-            result.append(QString::number(node->getNewH())).append(" ");
-            result.append(QString::number(node->getTheta()));
+            result.append(DoubleToString(node->getPoint()->getLongitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLatitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getHight(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getV(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getNewH(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getTheta(),heightPrecision));
 
             break;
         }
-        case CRUISE_NODE : {
+        case NP::CRUISE_NODE : {
             CruiseNode *node = (CruiseNode*)point;
 
             result.append(cruiseNode).append(" ");
-            result.append(QString::number(node->getPoint()->getLongitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getLatitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getHight())).append(" ");
-            result.append(QString::number(node->getV()));
+            result.append(DoubleToString(node->getPoint()->getLongitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLatitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getHight(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getV(),lowPrecision));
 
             break;
         }
-        case DEM_NODE : {
+        case NP::DEM_NODE : {
             DemNode *node = (DemNode*)point;
 
             result.append(demNode).append(" ");
-            result.append(QString::number(node->getPoint()->getLongitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getLatitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getHight())).append(" ");
-            result.append(QString::number(node->getV())).append(" ");
-            result.append(QString::number(node->getAzim())).append(" ");
-            result.append(QString::number(node->getLen())).append(" ");
-            result.append(QString::number(node->getWidth())).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLongitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLatitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getHight(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getV(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getAzim(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getLen(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getWidth(),lowPrecision)).append(" ");
             result.append(node->getPath());
 
             break;
         }
-        case DESCENT_NODE : {
+        case NP::DESCENT_NODE : {
             DescentNode *node = (DescentNode*)point;
 
             result.append(descendNode).append(" ");
-            result.append(QString::number(node->getPoint()->getLongitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getLatitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getHight())).append(" ");
-            result.append(QString::number(node->getV())).append(" ");
-            result.append(QString::number(node->getNewH())).append(" ");
-            result.append(QString::number(node->getTheta()));
+            result.append(DoubleToString(node->getPoint()->getLongitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLatitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getHight(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getV(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getNewH(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getTheta(),heightPrecision));
 
             break;
         }
-        case FINISH_NODE : {
+        case NP::FINISH_NODE : {
             FinishNode *node = (FinishNode*)point;
 
             result.append(finishNode).append(" ");
-            result.append(QString::number(node->getPoint()->getLongitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getLatitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getHight()));
+            result.append(DoubleToString(node->getPoint()->getLongitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLatitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getHight(),lowPrecision));
 
             break;
         }
-        case IMG_NODE : {
+        case NP::IMG_NODE : {
             ImgNode *node = (ImgNode*)point;
 
             result.append(imgNode).append(" ");
-            result.append(QString::number(node->getPoint()->getLongitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getLatitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getHight())).append(" ");
-            result.append(QString::number(node->getV())).append(" ");
-            result.append(QString::number(node->getAzim())).append(" ");
-            result.append(QString::number(node->getLen())).append(" ");
-            result.append(QString::number(node->getWidth())).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLongitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLatitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getHight(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getV(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getAzim(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getLen(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getWidth(),lowPrecision)).append(" ");
             result.append(node->getPath());
 
             break;
         }
-        case MARKER_NODE : {
+        case NP::MARKER_NODE : {
             MarkerNode *node = (MarkerNode*)point;
 
             result.append(markerNode).append(" ");
-            result.append(QString::number(node->getPoint()->getLongitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getLatitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getHight()));
+            result.append(DoubleToString(node->getPoint()->getLongitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLatitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getHight(),lowPrecision));
 
             break;
         }
-        case TAKEOFF_NODE : {
+        case NP::TAKEOFF_NODE : {
             TakeoffNode *node = (TakeoffNode*)point;
 
             result.append(takeoffNode).append(" ");
-            result.append(QString::number(node->getPoint()->getLongitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getLatitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getHight())).append(" ");
-            result.append(QString::number(node->getV()));
+            result.append(DoubleToString(node->getPoint()->getLongitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLatitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getHight(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getV(),lowPrecision));
 
             break;
         }
-        case TURN_NODE : {
+        case NP::TURN_NODE : {
             TurnNode *node = (TurnNode*)point;
 
             result.append(turnNode).append(" ");
-            result.append(QString::number(node->getPoint()->getLongitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getLatitude())).append(" ");
-            result.append(QString::number(node->getPoint()->getHight())).append(" ");
-            result.append(QString::number(node->getV())).append(" ");
-            result.append(QString::number(node->getR())).append(" ");
-            result.append(QString::number(node->getPsi()));
+            result.append(DoubleToString(node->getPoint()->getLongitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getLatitude(),heightPrecision)).append(" ");
+            result.append(DoubleToString(node->getPoint()->getHight(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getV(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getR(),lowPrecision)).append(" ");
+            result.append(DoubleToString(node->getPsi(),heightPrecision));
 
             break;
         }
@@ -163,75 +162,69 @@ NodePoint *NodePointReaderWriter::getPointFromString(QString string){
     }
 
     switch (nodeNames->value(args.at(name))) {
-        case CLIMB_NODE : {
+        case NP::CLIMB_NODE : {
             if(args.size() < 7) break;
 
             return new ClimbNode(args.at(longitude).toDouble(),args.at(latitide).toDouble(),args.at(height).toDouble(),
                              args.at(thetaOrPsi).toDouble(),args.at(speed).toDouble(),args.at(heightOrRadius).toDouble());
-            break;
         }
-        case CRUISE_NODE : {
+        case NP::CRUISE_NODE : {
             if(args.size() < 5) break;
 
            return new CruiseNode(args.at(longitude).toDouble(),args.at(latitide).toDouble(),args.at(height).toDouble(),
                                 args.at(speed).toDouble());
-            break;
         }
-        case DEM_NODE : {
+        case NP::DEM_NODE : {
             if(args.size() < 9) break;
 
             return new DemNode(args.at(longitude).toDouble(),args.at(latitide).toDouble(),args.at(height).toDouble(),
                                  args.at(speed).toDouble(),args.at(azimut).toDouble(),args.at(len).toDouble(),
                                  args.at(with).toDouble(),args.at(filePath));
-            break;
         }
-        case DESCENT_NODE : {
+        case NP::DESCENT_NODE : {
             if(args.size() < 7) break;
 
             return new DescentNode(args.at(longitude).toDouble(),args.at(latitide).toDouble(),args.at(height).toDouble(),
                              args.at(thetaOrPsi).toDouble(),args.at(speed).toDouble(),args.at(heightOrRadius).toDouble());
-            break;
         }
-        case FINISH_NODE : {
+        case NP::FINISH_NODE : {
             if(args.size() < 4) break;
 
             return new FinishNode(args.at(longitude).toDouble(),args.at(latitide).toDouble(),args.at(height).toDouble());
 
-            break;
         }
-        case IMG_NODE : {
+        case NP::IMG_NODE : {
             if(args.size() < 9) break;
 
             return new ImgNode(args.at(longitude).toDouble(),args.at(latitide).toDouble(),args.at(height).toDouble(),
                                  args.at(speed).toDouble(),args.at(azimut).toDouble(),args.at(len).toDouble(),
                                  args.at(with).toDouble(),args.at(filePath));
-            break;
         }
-        case MARKER_NODE : {
+        case NP::MARKER_NODE : {
             if(args.size() < 4) break;
 
             return new MarkerNode(args.at(longitude).toDouble(),args.at(latitide).toDouble(),args.at(height).toDouble());
 
-            break;
         }
-        case TAKEOFF_NODE : {
+        case NP::TAKEOFF_NODE : {
            if(args.size() < 5) break;
 
            return new TakeoffNode(args.at(longitude).toDouble(),args.at(latitide).toDouble(),args.at(height).toDouble(),
                                 args.at(speed).toDouble());
-            break;
         }
-        case TURN_NODE : {
+        case NP::TURN_NODE : {
 
             if(args.size() < 7) break;
-
             return new TurnNode(args.at(longitude).toDouble(),args.at(latitide).toDouble(),args.at(height).toDouble(),
                              args.at(heightOrRadius).toDouble(),args.at(speed).toDouble(),args.at(thetaOrPsi).toDouble());
-            break;
         }
         default:{
             break;
         }
     }
     return nullptr;
+}
+
+QString NodePointReaderWriter::DoubleToString(double number, int precision){
+    return QString::number(number,'f',precision);
 }

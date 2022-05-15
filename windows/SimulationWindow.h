@@ -4,13 +4,10 @@
 #include <QGraphicsPixmapItem>
 #include <QMainWindow>
 #include <drawing/view/maper/PlaneViewMapper.h>
-
 #include <drawing/layers/GeographicGridLayer.h>
 #include <drawing/layers/LayerManager.h>
-
 #include <settings/SettingsManager.h>
-
-#include <drawing/view/ClickablePlane.h>
+#include <drawing/scene/ClicableScene.h>
 
 namespace Ui {
 class SimulationWindow;
@@ -20,7 +17,10 @@ class SimulationWindow : public QMainWindow{
     Q_OBJECT
 
 public:
-    explicit SimulationWindow(QWidget *parent,SettingsManager *settingsManager,PlaneViewMapper *planeView);
+    explicit SimulationWindow(QWidget *parent,
+                              SettingsManager *settingsManager,
+                              PlaneViewMapper *planeView,
+                              QImage bgImg);
     ~SimulationWindow();
 
     QMainWindow *getStartWindow();
@@ -40,14 +40,11 @@ private:
     void initBackground(QImage img);
 
     QMainWindow *startWindow;
-
     SettingsManager *settingsManager;
-
     PlaneViewMapper *planeView;
-
     LayerManager *layerManager;
 
-    ClickablePlane *clickablePlane;
+    ClicableScene *clickablePlane;
 
     Ui::SimulationWindow *ui;
 };

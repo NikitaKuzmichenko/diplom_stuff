@@ -6,11 +6,11 @@
 #include <QPen>
 
 
-class SegmentCreator{
+class DisplayedSegmentCreator{
 
 public:
-    SegmentCreator();
-    DisplayedSegment *createSegment(DisplayedNodePoint *startPoint,DisplayedNodePoint *endPoint);
+    DisplayedSegmentCreator();
+    DisplayedSegment *createSegment(DisplayedNode *startPoint,DisplayedNode *endPoint);
 
 private:
 

@@ -24,6 +24,8 @@ public:
     double getPsi();
     void setPsi(double value);
 
+    void calcualteTurnRadius();
+    QString toString();
 private:
     double r;    // радиус разворота
     double v;    // скорость прохождения

@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
-
+#include <utils/GeodesicUtils.h>
 #include <utils/Utils.h>
 
 ElevationMap::ElevationMap(){}
@@ -96,8 +96,8 @@ QString ElevationMap::getMapPath(){
 
 bool ElevationMap::addHeightToSinglePoint(PhysicalPoint *point){
 
-    int column = (point->getLongitude() - minLongDeg) / this->stepToDegRatio;
-    int row = (maxLatDeg - point->getLatitude()) / this->stepToDegRatio;
+    int column = (GeodesicUtils::toDeg(point->getLongitude()) - minLongDeg) / this->stepToDegRatio;
+    int row = (maxLatDeg - GeodesicUtils::toDeg(point->getLatitude())) / this->stepToDegRatio;
 
     if(column == columnNumber){
         column--;

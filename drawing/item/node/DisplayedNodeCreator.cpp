@@ -1,15 +1,15 @@
-#include "NodeCreator.h"
+#include "DisplayedNodeCreator.h"
+#include <QGraphicsPixmapItem>
 
+DisplayedNodeCreator::DisplayedNodeCreator(){}
 
-NodeCreator::NodeCreator(){}
-
-DisplayedNodePoint *NodeCreator::ceratePoint(NodePoint *node,QPointF position){
+DisplayedNode *DisplayedNodeCreator::ceratePoint(NodePoint *node,QPointF position){
 
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(position.x() - 3,position.y() - 3,6,6);
     circle->setPen(*defaultPen);
     circle->setBrush(*defaultBrush);
 
-    DisplayedNodePoint *displayedNode = new DisplayedNodePoint(circle,node,position);
+    DisplayedNode *displayedNode = new DisplayedNode(circle,node,position);
 
     QString name;
     name.append("P");
@@ -17,5 +17,3 @@ DisplayedNodePoint *NodeCreator::ceratePoint(NodePoint *node,QPointF position){
 
     return displayedNode;
 }
-
-

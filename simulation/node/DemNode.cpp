@@ -1,19 +1,19 @@
 #include "DemNode.h"
 
 DemNode::DemNode() : NodePoint(){
-    type = DEM_NODE;
+    type = NP::DEM_NODE;
 }
 
 DemNode::DemNode(PhysicalPoint *point) : NodePoint(point){
-    type = DEM_NODE;
+    type = NP::DEM_NODE;
 }
 
 DemNode::DemNode(double longitude, double latitude, double height) : NodePoint(longitude,latitude,height) {
-    type = DEM_NODE;
+    type = NP::DEM_NODE;
 }
 
 DemNode::DemNode(PhysicalPoint *point, double v, double azim, double len, double width,QString path) : NodePoint(point){
-    type = DEM_NODE;
+    type = NP::DEM_NODE;
     this->v = v;
     this->azim = azim;
     this->len = len;
@@ -22,7 +22,7 @@ DemNode::DemNode(PhysicalPoint *point, double v, double azim, double len, double
 }
 
 DemNode::DemNode(double longitude, double latitude, double height, double v, double azim, double len, double width,QString path) : NodePoint(longitude,latitude,height){
-    type = DEM_NODE;
+    type = NP::DEM_NODE;
     this->v = v;
     this->azim = azim;
     this->len = len;
@@ -69,4 +69,13 @@ QString DemNode::getPath(){
 
 void DemNode::setPath(QString value){
     path = value;
+}
+
+QString DemNode::toString(){
+    return NodePoint::toString()
+        .append("V = " + QString::number(v)).append(" ")
+        .append("azim = " + QString::number(azim)).append(" ")
+        .append("len = " + QString::number(len)).append(" ")
+        .append("width = " + QString::number(width)).append(" ")
+        .append("path = " + path).append(" ");
 }

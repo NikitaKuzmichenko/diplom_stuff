@@ -24,6 +24,7 @@ public:
     double getNewH();
     void setNewH(double value);
 
+    QString toString();
 private:
     double theta; // угол спуска (arctg(Vy/Vx))
     double v; // скорость в точке

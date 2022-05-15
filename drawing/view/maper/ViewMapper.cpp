@@ -1,5 +1,8 @@
 #include "ViewMapper.h"
 
+ViewMapper::ViewMapper(){}
+ViewMapper::~ViewMapper(){}
+
 ElevationMap *ViewMapper::getElevationMap(){
     return elevationMap;
 }
@@ -14,20 +17,4 @@ QRect ViewMapper::getBoundingRect(){
 
 void ViewMapper::setBoundingRect(QRect value){
     boundingRect = value;
-}
-
-double ViewMapper::getUnitPerPixelY(){
-    return unitPerPixelY;
-}
-
-void ViewMapper::setUnitPerPixelY(double value){
-    unitPerPixelY = value;
-}
-
-double ViewMapper::getUnitPerPixelX(){
-    return unitPerPixelX;
-}
-
-void ViewMapper::setUnitPerPixelX(double value){
-    unitPerPixelX = value;
 }
