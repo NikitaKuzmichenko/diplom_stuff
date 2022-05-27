@@ -33,6 +33,8 @@ private:
     QMainWindow * startWindow;
 
     QStringList colors = {"White","Black", "Red", "Green", "Blue", "Cyan", "Yellow"};
+    QStringList fonts = {"Arial","Times New Roman", "Courier", "Impact", "Gabriola"};
+
     SettingsManager *manager;
 
     Ui::SettingsWindow *ui;

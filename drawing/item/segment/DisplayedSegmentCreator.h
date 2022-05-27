@@ -10,7 +10,7 @@ class DisplayedSegmentCreator{
 
 public:
     DisplayedSegmentCreator();
-    DisplayedSegment *createSegment(DisplayedNode *startPoint,DisplayedNode *endPoint);
+    DisplayedSegment *createSegment(DisplayedNode *startPoint,DisplayedNode *endPoint,long segmentId);
 
 private:
 

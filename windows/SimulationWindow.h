@@ -8,6 +8,7 @@
 #include <drawing/layers/LayerManager.h>
 #include <settings/SettingsManager.h>
 #include <drawing/scene/ClicableScene.h>
+#include <input/SimulationTreeView.h>
 
 namespace Ui {
 class SimulationWindow;
@@ -20,7 +21,8 @@ public:
     explicit SimulationWindow(QWidget *parent,
                               SettingsManager *settingsManager,
                               PlaneViewMapper *planeView,
-                              QImage bgImg);
+                              QImage bgImg,
+                              QString nodesPath);
     ~SimulationWindow();
 
     QMainWindow *getStartWindow();
@@ -29,9 +31,17 @@ public:
 private slots:
     void on_geo_base_en_stateChanged(int arg1);
     void on_node_points_en_stateChanged(int arg1);
-    void on_action_type_activated(int index);
     void on_text_stateChanged(int arg1);
     void on_lines_stateChanged(int arg1);
+    void on_deleteButton_clicked();
+    void on_addTurnNodeButton_clicked();
+    void on_moveNodeButton_clicked();
+    void on_addNodeToSegmentButton_clicked();
+    void on_selectItemButton_clicked();
+    void on_saveButton_clicked();
+    void on_simulateButton_clicked();
+    void on_backButton_clicked();
+    void on_clearButton_clicked();
 
 private:
 
@@ -44,6 +54,8 @@ private:
     PlaneViewMapper *planeView;
     LayerManager *layerManager;
 
+    SimulationTreeView *treeView;
+    Simulation *simulation;
     ClicableScene *clickablePlane;
 
     Ui::SimulationWindow *ui;

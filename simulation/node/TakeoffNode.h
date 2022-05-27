@@ -20,7 +20,7 @@ public:
 
     QString toString();
 private:
-    double  v;    // скорость
+    double  v = 0;    // скорость
 };
 
 #endif // TAKEOFFNODE_H

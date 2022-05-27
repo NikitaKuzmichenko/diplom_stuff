@@ -13,12 +13,10 @@ DisplayedSegment::DisplayedSegment(DisplayedNode *startPoint, DisplayedNode *end
                 (startPoint->getPosition().x() + endPoint->getPosition().x())/2,
                 (startPoint->getPosition().y() + endPoint->getPosition().y())/2);
 
-    this->type = ItemType::SegmentItem;
+    this->type = ItemType::SEGMENT_ITEM;
 }
 
-DisplayedSegment::~DisplayedSegment(){
-    delete realSegment;
-}
+DisplayedSegment::~DisplayedSegment(){}
 
 void DisplayedSegment::updateCoordinates(){
     ((QGraphicsLineItem*)mainItem)->setLine(startPoint->getPosition().x(),startPoint->getPosition().y(),
@@ -27,12 +25,6 @@ void DisplayedSegment::updateCoordinates(){
     center.setX((startPoint->getPosition().x() + endPoint->getPosition().x())/2);
     center.setY((startPoint->getPosition().y() + endPoint->getPosition().y())/2);
 
-}
-
-Segment *DisplayedSegment::parseRealRegment(){
-    Segment *segment = new Segment(startPoint->getNode(),endPoint->getNode());
-    this->realSegment = segment;
-    return segment;
 }
 
 DisplayedNode *DisplayedSegment::getStartPoint(){

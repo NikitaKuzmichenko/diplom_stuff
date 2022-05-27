@@ -3,7 +3,6 @@
 
 #include <simulation/node/NodePoint.h>
 
-
 class Segment{
 public:
     Segment();
@@ -27,9 +26,8 @@ public:
     void calculateDistance();
     /*! вычисляет трангаж  у всех узловых точек в сегменте*/
     void calculateHieghtChane();
-    /*! вычисляет долготу пересечения экватора и диреркционный угол*/
-    void calculateL0();
 
+    void calculateSegment();
     /*! удаляет все узловые точки из сегмента*/
     void clearSegment();
 
@@ -44,12 +42,12 @@ public:
     QVector<NodePoint *> *getNodes();
     void setNodes(QVector<NodePoint *> *value);
 
-private:
-    long id;
-    double lenght = -1;
+    double lenght = NAN;
+    double startCource = NAN;
+    double endCource = NAN;
 
-    double L0 =-1; // долгота пересечения экватора
-    double K0 = -1; // диррекционный угол
+private:
+    long id = -1;
 
     NodePoint *startPoint;
     NodePoint *endPoint;

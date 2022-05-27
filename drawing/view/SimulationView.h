@@ -9,45 +9,41 @@
 #include <drawing/item/wayPoint/DisplayedWayPoint.h>
 #include <drawing/item/wayPoint/DisplayedWayPointCreator.h>
 
-class SimulationView{
+class SimulationView : public QObject{
+    Q_OBJECT
 public:
     SimulationView(Simulation *simulation,LayerManager *layerManager,ViewMapper *mapper);
     ~SimulationView();
 
-    DisplayedNode *createTurnPoint(QPointF pos,NP::NodePointType type);
-    DisplayedNode *createTurnPoint(QPointF pos,NP::NodePointType type,long positioInList);
+    void createNewTurnPoint(QPointF pos,NP::NodePointType type);
+    void addNewNodeToSegment(QPointF pos,NP::NodePointType type,long segmentId);
+    void deleteNode(DisplayedNode *nodeItem);
 
-    DisplayedNode *addPointToSegment(QPointF pos,NP::NodePointType type,long segmentId);
-    DisplayedNode *addTurnPointToSegment(QPointF pos,NP::NodePointType type,long segmentId);
-    
     DisplayedNode *findNodeByMainItem(QGraphicsItem *item);
     DisplayedSegment *findSegmentByMainItem(QGraphicsItem *item);
     DisplayedWayPoint *findWayPointByMainItem(QGraphicsItem *item);
 
-    void deleteNode(DisplayedNode *nodeItem);
+    void updateRelatedSegments(DisplayedNode *point);
+
     virtual bool updateNode(DisplayedNode *selectedNode,QPointF pos) = 0;
-    
     virtual bool moveNode(DisplayedNode *selectedNode, QPointF newPos) = 0;
 
-    virtual void loadAllFromSimulation() = 0;
-    virtual void loadPointFromSimulation(long id) = 0;
-    virtual void loadSegmentFromSimulation(long id) = 0;
-    virtual void loadWayPointFromSimulation(long id) = 0;
+    ViewMapper *getMapper();
+    void setMapper(ViewMapper *value);
 
 protected:
 
-    DisplayedSegment *createSegment(DisplayedNode *startPoint, DisplayedNode *endPoint);
-    DisplayedSegment *createSegment(DisplayedNode *startPoint, DisplayedNode *endPoint,long positioInList);
+    DisplayedNode *findNodeById(long id);
+    DisplayedSegment *findSegmentById(long id);
 
-    DisplayedNode *createPoint(NodePoint *realPoint);
-    DisplayedNode *createPoint(NodePoint *realPoint,QPointF pos);
-    DisplayedWayPoint *createWayPoint(WayPoint *realPoint);
+    DisplayedSegment *displaySegment(DisplayedNode *startPoint, DisplayedNode *endPoint,long id);
+    DisplayedNode *displayPoint(NodePoint *realPoint,QPointF pos);
+    DisplayedWayPoint *displayWayPoint(WayPoint *realPoint,QPointF pos);
 
-    void updateRelatedSegments(DisplayedNode *point);
     QVector<DisplayedSegment *> getRelatedSegments(DisplayedNode *point);
 
-    virtual PhysicalPoint *convertPositionTopoint(QPointF pos) = 0;
-    virtual QPointF getPositionFromPoint(PhysicalPoint *pos) = 0;
+    virtual PhysicalPoint *convertPositionToPoint(QPointF pos) = 0;
+    virtual QPointF convertPointToPosition(PhysicalPoint *pos) = 0;
 
     DisplayedNodeCreator *nodeCreator = new DisplayedNodeCreator();
     DisplayedSegmentCreator *segmentCreator = new DisplayedSegmentCreator();
@@ -61,6 +57,19 @@ protected:
     LayerManager *layerManager;
 
     ViewMapper *mapper;
+
+public slots:
+    virtual void segmentWasCreated(long segmentId) = 0;
+    virtual void segmentWasDeleted(long segmentId) = 0;
+    virtual void segmentWasUpdated(long segmentId) = 0;
+
+    virtual void nodeWasDeleted(long nodeId) = 0;
+    virtual void nodeWasCreated(long nodeId) = 0;
+    virtual void nodeWasUpdated(long nodeId) = 0;
+    virtual void nodeWasAddedToSegment(long nodeId,long segmentId) = 0;
+
+    virtual void wayPointWasDeleted(long id) = 0;
+    virtual void wayPointWasCreated(long id) = 0;
 };
 
 #endif // SIMULATIONVIEW_H

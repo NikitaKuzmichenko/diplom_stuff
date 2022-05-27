@@ -27,9 +27,9 @@ public:
     void calcualteTurnRadius();
     QString toString();
 private:
-    double r;    // радиус разворота
-    double v;    // скорость прохождения
-    double psi; // угол крена
+    double r = 0;    // радиус разворота
+    double v = 0;    // скорость прохождения
+    double psi = 0; // угол крена
 };
 
 #endif // TURNNODE_H

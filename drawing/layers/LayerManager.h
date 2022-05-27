@@ -10,7 +10,9 @@ enum LayerName{
     grid,
     text,
     line,
-    node_point
+    node_point,
+    height_chande_point,
+    way_point
 };
 
 class LayerManager{

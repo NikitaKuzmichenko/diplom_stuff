@@ -1,2 +1,11 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/new/icons">
+        <file>img/deleteImg.png</file>
+        <file>img/dot.png</file>
+        <file>img/handIconjpg.png</file>
+        <file>img/line.png</file>
+        <file>img/pointer.png</file>
+        <file>img/background.jpg</file>
+        <file>img/bgMap.jpg</file>
+    </qresource>
+</RCC>

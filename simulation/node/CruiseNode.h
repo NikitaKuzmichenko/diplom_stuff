@@ -20,7 +20,7 @@ public:
 
     QString toString();
 private:
-    double v;
+    double v = 0;
 };
 
 #endif // CRUISENODE_H

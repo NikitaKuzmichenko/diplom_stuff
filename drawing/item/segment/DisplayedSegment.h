@@ -23,14 +23,12 @@ public:
     QPointF getCenter();
     void setCenter(QPointF value);
 
-    class Segment *parseRealRegment();
-
-    class Segment *getRealSegment();
-    void setRealSegment(class Segment *value);
+    Segment *getRealSegment();
+    void setRealSegment(Segment *value);
 
 private:
     QPointF center;
-    class Segment *realSegment;
+    Segment *realSegment;
     DisplayedNode *startPoint;
     DisplayedNode *endPoint;
 };

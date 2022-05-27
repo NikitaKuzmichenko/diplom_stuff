@@ -9,11 +9,13 @@
 #include <simulation/wayPoint/WayPoint.h>
 #include "SimulationReaderWriter.h"
 
-class Simulation{
+class Simulation : public QObject{
+    Q_OBJECT
 public:
     Simulation();
     ~Simulation();
 
+    NodePoint *createNode(PhysicalPoint *point, NP::NodePointType type);
     NodePoint *createTurnNode(PhysicalPoint *point, NP::NodePointType type);
     NodePoint *createTurnNode(PhysicalPoint *point, NP::NodePointType type,long positionInList);
 
@@ -22,10 +24,14 @@ public:
     Segment *createSegment(NodePoint *start,NodePoint *end);
     Segment *createSegment(NodePoint *start,NodePoint *end,long positionInList);
 
+    void splitSegments(NodePoint *middlePoint,Segment *segment);
+    Segment *mergeSegments(Segment *segment1,Segment *segment2);
+
     void insertSegmentToEnd(Segment *segment);
     void insertSegment(Segment *segment,long position);
 
     NodePoint *getNode(long id);
+    NodePoint *changeNodeType(long id,NP::NodePointType type);
     Segment *getSegment(long id);
     WayPoint *getWayPoint(long id);
 
@@ -37,34 +43,24 @@ public:
     void removeNode(long id);
     void removeSegment(long id);
 
-    void updateNode(); // сделать что нибудь и сюда сигналы запихать
+    void updateNode(long id); // сделать что нибудь и сюда сигналы запихать
 
     /*!
      * запускает flip.exe
     */
     bool simulate();
-    /*!
-        возвраящает коды ошибок
-        0-всё впорядке
-        1-нет exe файла
-        2-нет файла с маршрутом
-    */
+
+    bool getNodePoints();
+
+    void display();
+
     int isReadyForSimulation();
-    /*!
-        возвраящает коды ошибок
-        0-всё впорядке
-        1-нет точки всзлёта
-        2-нет точки посадки
-        3-недостаточно узловых точек
-        4-приусдвуют неизвесные точки
-    */
+
     int validateNodePoints();
 
     void saveToFile();
-    /*!
-     рассчитает углы поворота и радус поворота, если возможно.
-    */
-    void updateTurnPoints();
+
+    void clear();
 
     QVector<NodePoint *> *getTurnPoints();
     void setTurnPoints(QVector<NodePoint *> *value);
@@ -74,6 +70,12 @@ public:
 
     QVector<WayPoint *> *getWayPoints();
     void setWayPoints(QVector<WayPoint *> *value);
+
+    SimulationReaderWriter *getReaderWriter();
+    void setReaderWriter(SimulationReaderWriter *value);
+
+    NodePoint *initNode(PhysicalPoint *point, NP::NodePointType type);
+
 private:
     long nodeId = 0;
     long segmentId = 0;
@@ -84,8 +86,23 @@ private:
     QVector<WayPoint *> *wayPoints;
 
     SimulationReaderWriter *readerWriter;
-    NodePoint *initNode(PhysicalPoint *point, NP::NodePointType type);
+
+    void removeTurnPoint(NodePoint *point);
+
     QString genarateExecutecommand();
+
+signals:
+    void segmentCreated(long segmentId);
+    void segmentDeleted(long segmentId);
+    void segmentUpdated(long segmentId);
+
+    void nodeDeleted(long nodeId);
+    void nodeCreated(long nodeId);
+    void nodeUpdated(long nodeId);
+    void nodeAddedToSegment(long nodeId,long segmentId);
+
+    void wayPointCreated(long id);
+    void wayPointDeleted(long id);
 };
 
 #endif // SIMULATION_H

@@ -8,7 +8,7 @@
 class DisplayedNodeCreator{
 public:
     DisplayedNodeCreator();
-    DisplayedNode *ceratePoint(class NodePoint *node,QPointF position);
+    DisplayedNode *ceratePoint(NodePoint *node,QPointF position);
 
 private :
     QPen *defaultPen = new QPen();

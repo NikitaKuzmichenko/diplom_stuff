@@ -42,8 +42,13 @@ void NodePoint::setPoint(PhysicalPoint *value){
     point = value;
 }
 
-void NodePoint::generateDefaultName(){
-
+QString NodePoint::generateDefaultName(){
+    this->name = new QString();
+    this->name->
+            append(QMetaEnum :: fromType <NP::NodePointType>().valueToKeys(type))
+            .append(", id = ")
+            .append(std::to_string(this->id).c_str());
+    return *this->name;
 }
 
 double NodePoint::getDistanceFromSegmentStart(){

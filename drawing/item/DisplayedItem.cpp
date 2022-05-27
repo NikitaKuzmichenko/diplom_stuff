@@ -11,8 +11,7 @@ DisplayedItem::~DisplayedItem(){
     delete text;
 }
 
-void DisplayedItem::createDescription()
-{
+void DisplayedItem::createDescription(){
 
 }
 
@@ -38,4 +37,12 @@ QString DisplayedItem::getName() {
 
 void DisplayedItem::setName(QString &value){
     name = value;
+}
+
+long DisplayedItem::getId() {
+    return id;
+}
+
+void DisplayedItem::setId(long value){
+    id = value;
 }

@@ -13,6 +13,8 @@ CreateSimulationWindow::CreateSimulationWindow(QWidget *parent) : QMainWindow(pa
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
 
+    simulationPath = QString();
+
     planeViewMapper = new PlaneViewMapper();
     scene = new QGraphicsScene();
     layer = new GeographicGridLayer(1);
@@ -38,7 +40,7 @@ CreateSimulationWindow::~CreateSimulationWindow(){
 
 void CreateSimulationWindow::on_select_img_clicked(){
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                    "select map image","C:\\Users\\nikit\\OneDrive\\Рабочий стол",
+                                                    "select map image", QDir::currentPath(),
                                                     "Images (*.png *.xpm *.jpg)");
 
     if(!fileName.isEmpty()){
@@ -75,7 +77,8 @@ void CreateSimulationWindow::on_select_img_clicked(){
 }
 
 void CreateSimulationWindow::on_select_model_clicked(){
-    QString fileName = QFileDialog::getOpenFileName(this,"select map image","C:\\Users\\nikit\\OneDrive\\Рабочий стол","*.txt *.asc");
+    QString fileName = QFileDialog::getOpenFileName(this,"select map image",
+                                                     QDir::currentPath(),"*.txt *.asc");
 
     if(!fileName.isEmpty()){
         ElevationMap *elevationMap = new ElevationMap(fileName);
@@ -89,8 +92,8 @@ void CreateSimulationWindow::on_select_model_clicked(){
 
         }else{
 
-            layer->setLinesPerXAxis(manager->getSettings()->getLines_in_grid());
-            layer->setLinesPerYAxis(manager->getSettings()->getLines_in_grid());
+            layer->setLinesPerXAxis(manager->getSettings()->lines_in_grid);
+            layer->setLinesPerYAxis(manager->getSettings()->lines_in_grid);
 
             layer->setMaxYValue(elevationMap->getMaxLatDeg());
             layer->setMinYValue(elevationMap->getMinLatDeg());
@@ -117,10 +120,19 @@ void CreateSimulationWindow::on_select_model_clicked(){
     }
 }
 
+void CreateSimulationWindow::on_select_simulation_clicked(){
+      QString fileName = QFileDialog::getOpenFileName(this,"select simulation file",
+                                                       QDir::currentPath(),"*.flip");
+        if(!fileName.isEmpty()){
+            ui->simulation_path->setText(fileName);
+            simulationPath = fileName;
+        }
+}
+
 void CreateSimulationWindow::on_start_simulation_clicked(){
     if(mapPresent && imgPresent){
 
-        SimulationWindow *simulation = new SimulationWindow(nullptr,manager,planeViewMapper,*bgImg);
+        SimulationWindow *simulation = new SimulationWindow(nullptr,manager,planeViewMapper,*bgImg,simulationPath);
         simulation->setStartWindow(startWindow);
         simulation->showMaximized();
 
@@ -133,6 +145,7 @@ void CreateSimulationWindow::on_start_simulation_clicked(){
         msgBox.exec();
     }
 }
+
 
 void CreateSimulationWindow::on_back_to_menu_clicked(){
     startWindow->show();
@@ -154,3 +167,5 @@ SettingsManager *CreateSimulationWindow::getManager(){
 void CreateSimulationWindow::setManager(SettingsManager *value){
     manager = value;
 }
+
+

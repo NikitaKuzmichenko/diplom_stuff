@@ -10,6 +10,7 @@ public:
     ~DisplayedNode();
 
     void moveBy(double dx,double dy);
+    void moveTo(QPointF position);
     void createDescription();
 
     NodePoint *getNode();
@@ -18,6 +19,7 @@ public:
     QPointF getPosition();
     void setPosition(QPointF value);
 private:
+    QString formatName();
     QPointF position;
     NodePoint *node = nullptr;
 };

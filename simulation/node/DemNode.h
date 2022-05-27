@@ -34,10 +34,10 @@ public:
     QString toString();
 private:
 
-    double  v;    // скорость
-    double  azim; // азимут осевой линии
-    double  len;   // длина зоны
-    double  width; // ширина зоны
+    double  v = 0;    // скорость
+    double  azim = 0; // азимут осевой линии
+    double  len = 0;   // длина зоны
+    double  width = 0; // ширина зоны
 
     QString path; // абсолютный путь к каталогу с соотв. mvr/mvm
 };

@@ -18,22 +18,39 @@ SimulationView::~SimulationView(){
     delete mapper;
 }
 
-DisplayedNode *SimulationView::createTurnPoint(QPointF pos, NP::NodePointType type){
-    return createTurnPoint(pos,type,simulation->getTurnPoints()->length());
+ViewMapper *SimulationView::getMapper(){
+    return mapper;
 }
 
-DisplayedNode *SimulationView::createTurnPoint(QPointF pos, NP::NodePointType type, long positioInList){
-    NodePoint *node = simulation->createTurnNode(convertPositionTopoint(pos),type,positioInList);
-    return createPoint(node,pos);
+void SimulationView::setMapper(ViewMapper *value){
+    mapper = value;
 }
 
-DisplayedNode *SimulationView::addPointToSegment(QPointF pos, NP::NodePointType type, long segmentId){
-    NodePoint *node = simulation->createNodeOnSegment(convertPositionTopoint(pos),type,segmentId);
-    return createPoint(node,pos);
+DisplayedNode *SimulationView::findNodeById(long id){
+    for(auto result: *nodes){
+        if(result->getId()== id){
+            return result;
+        }
+    }
+    return nullptr;
 }
 
-DisplayedNode *SimulationView::addTurnPointToSegment(QPointF pos, NP::NodePointType type, long segmentId){
+DisplayedSegment *SimulationView::findSegmentById(long id){
+    for(auto result: *segments){
+        if(result->getId()== id){
+            return result;
+        }
+    }
+    return nullptr;
+}
 
+//=============================================================================
+void SimulationView::createNewTurnPoint(QPointF pos, NP::NodePointType type){
+    simulation->createTurnNode(convertPositionToPoint(pos),type);
+}
+
+void SimulationView::addNewNodeToSegment(QPointF pos, NP::NodePointType type, long segmentId){
+    simulation->createNodeOnSegment(convertPositionToPoint(pos),type,segmentId);
 }
 
 DisplayedNode *SimulationView::findNodeByMainItem(QGraphicsItem *item){
@@ -65,29 +82,19 @@ DisplayedSegment *SimulationView::findSegmentByMainItem(QGraphicsItem *item){
 
 void SimulationView::deleteNode(DisplayedNode *nodeItem){
     simulation->removeNode(nodeItem->getNode()->getId());
-    nodes->removeOne(nodeItem);
 }
 
 
-DisplayedSegment *SimulationView::createSegment(DisplayedNode *startPoint, DisplayedNode *endPoint){
-    return createSegment(startPoint,endPoint,segments->length());
-}
-
-DisplayedSegment *SimulationView::createSegment(DisplayedNode *startPoint, DisplayedNode *endPoint, long positioInList){
-    DisplayedSegment *segment = segmentCreator->createSegment(startPoint,endPoint);
+DisplayedSegment *SimulationView::displaySegment(DisplayedNode *startPoint, DisplayedNode *endPoint,long id){
+    DisplayedSegment *segment = segmentCreator->createSegment(startPoint,endPoint,id);
     layerManager->getLayerByName(LayerName::line)->addItem(segment->getMainItem());
 
-    simulation->insertSegmentToEnd(segment->getRealSegment());
-    segments->insert(positioInList,segment);
+    segments->append(segment);
 
     return segment;
 }
 
-DisplayedNode *SimulationView::createPoint(NodePoint *realPoint){
-    return createPoint(realPoint,getPositionFromPoint(realPoint->getPoint()));
-}
-
-DisplayedNode *SimulationView::createPoint(NodePoint *realPoint, QPointF pos){
+DisplayedNode *SimulationView::displayPoint(NodePoint *realPoint, QPointF pos){
     DisplayedNode *displayedNode = nodeCreator->ceratePoint(realPoint,pos);
     displayedNode->createDescription();
     nodes->append(displayedNode);
@@ -98,13 +105,12 @@ DisplayedNode *SimulationView::createPoint(NodePoint *realPoint, QPointF pos){
     return displayedNode;
 }
 
-DisplayedWayPoint *SimulationView::createWayPoint(WayPoint *realPoint){
-    DisplayedWayPoint *displayedWayPoint = wayPointCreator->ceratePoint(realPoint,getPositionFromPoint(realPoint->point));
+DisplayedWayPoint *SimulationView::displayWayPoint(WayPoint *realPoint,QPointF pos){
+    DisplayedWayPoint *displayedWayPoint = wayPointCreator->ceratePoint(realPoint,pos);
     displayedWayPoint->createDescription();
     wayPoints->append(displayedWayPoint);
 
-    // добавлять в нужный слой
-    layerManager->getLayerByName(LayerName::node_point)->addItem(displayedWayPoint->getMainItem());
+    layerManager->getLayerByName(LayerName::way_point)->addItem(displayedWayPoint->getMainItem());
     layerManager->getLayerByName(LayerName::text)->addItem(displayedWayPoint->getText());
 
     return displayedWayPoint;
@@ -128,23 +134,3 @@ QVector<DisplayedSegment *> SimulationView::getRelatedSegments(DisplayedNode *po
     }
     return result;
 }
-
-//bool SimulationView::updateNode(DisplayedNode *selectedNode,QPointF pos){
-//    if(selectedNode->getNode() == nullptr){
-//        return false;
-//    }
-
-//    selectedNode->getNode()->getPoint()->setLongitude(map->minXValue + map->unitPerPixelX * pos.x());
-//    selectedNode->getNode()->getPoint()->setLatitude(map->maxYValue - map->unitPerPixelY * pos.y());
-//    //map->getElevationMap()->addHeightToSinglePoint(item->getNode()->getPoint());
-
-//    selectedNode->setPosition(pos);
-
-//    return true;
-//}
-//PhysicalPoint *SimulationView::convertPositionTopoint(QPointF pos){
-//    PhysicalPoint *result = new PhysicalPoint();
-//    result->setLongitude(mapper->minXValue + mapper->unitPerPixelX * pos.x());
-//    result->setLatitude(mapper->maxYValue - mapper->unitPerPixelY * pos.y());
-//    result->setHeight(0);
-//}

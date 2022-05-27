@@ -13,54 +13,96 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="createSimulation">
     <property name="geometry">
      <rect>
       <x>680</x>
-      <y>200</y>
-      <width>151</width>
-      <height>41</height>
+      <y>260</y>
+      <width>210</width>
+      <height>50</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">font-size : 25px;
+background-color: rgb(149, 148, 145);
+border:  outset
+</string>
+    </property>
     <property name="text">
-     <string>Create simulation</string>
+     <string>Simulation</string>
     </property>
    </widget>
    <widget class="QPushButton" name="settings">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>680</x>
-      <y>270</y>
-      <width>151</width>
-      <height>41</height>
+      <y>380</y>
+      <width>210</width>
+      <height>50</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size : 25px;
+background-color: rgb(149, 148, 145);
+border:  outset</string>
     </property>
     <property name="text">
      <string>Settings</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="exit">
     <property name="geometry">
      <rect>
       <x>680</x>
-      <y>340</y>
-      <width>151</width>
-      <height>41</height>
+      <y>500</y>
+      <width>210</width>
+      <height>50</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size : 25px;
+background-color: rgb(149, 148, 145);
+border:  outset</string>
     </property>
     <property name="text">
      <string>Exit</string>
     </property>
    </widget>
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>-30</x>
+      <y>-50</y>
+      <width>1601</width>
+      <height>911</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/new/icons/img/background.jpg) 0 0 0 0 stretch stretch;</string>
+    </property>
+   </widget>
+   <zorder>graphicsView</zorder>
+   <zorder>createSimulation</zorder>
+   <zorder>settings</zorder>
+   <zorder>exit</zorder>
   </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>1536</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

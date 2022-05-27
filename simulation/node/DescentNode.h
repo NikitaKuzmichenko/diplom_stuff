@@ -26,9 +26,9 @@ public:
 
     QString toString();
 private:
-    double theta; // угол спуска (arctg(Vy/Vx))
-    double v; // скорость в точке
-    double newH; // высота после манёвра
+    double theta = 0; // угол спуска (arctg(Vy/Vx))
+    double v = 0; // скорость в точке
+    double newH = 0; // высота после манёвра
 };
 
 #endif // DESCENTNODE_H

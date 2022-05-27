@@ -1,5 +1,6 @@
 #include "Segment.h"
 #include <QVector>
+#include <QDebug>
 #include <simulation/node/ClimbNode.h>
 #include <simulation/node/DescentNode.h>
 #include <utils/GeodesicUtils.h>
@@ -12,7 +13,7 @@ Segment::Segment(NodePoint *startPoint, NodePoint *endPoint){
     this->startPoint = startPoint;
     this->endPoint = endPoint;
 
-    nodes = new  QVector<NodePoint *>();
+    nodes = new QVector<NodePoint *>();
 }
 
 Segment::~Segment(){
@@ -45,10 +46,12 @@ void Segment::setId(long value){
 
 void Segment::addNodePoint(NodePoint *point){
     nodes->append(point);
+    point->setSegmentId(id);
 }
 
 void Segment::addNodePoint(NodePoint *point, long position){
     nodes->insert(position,point);
+    point->setSegmentId(id);
 }
 
 bool Segment::removeNodePoint(long pointId){
@@ -81,7 +84,6 @@ NodePoint *Segment::getNodePoint(long pointId){
     return  nullptr;
 }
 
-
 void Segment::sortNodesByDistanceFromStart(){
       std::sort(nodes->begin(),nodes->end(),
                 [](NodePoint *node1, NodePoint *node2)->bool
@@ -95,9 +97,13 @@ void Segment::clearSegment(){
 }
 
 void Segment::calculateDistance(){
-    this->lenght = GeodesicUtils::getDistanceBetweenPoints(startPoint->getPoint(),endPoint->getPoint());
+    InversGeoProblemSolution solution = GeodesicUtils::inversGeopoblem(startPoint->getPoint(),endPoint->getPoint());
+    lenght = solution.dist;
+    startCource = solution.azim1;
+    endCource = solution.azim2;
     for(int i=0;i<nodes->length();i++){
         NodePoint *p =nodes->at(i);
+        p->setSegmentId(id);
         p->setDistanceFromSegmentStart(GeodesicUtils::getDistanceBetweenPoints(startPoint->getPoint(),p->getPoint()));
     }
 }
@@ -122,8 +128,10 @@ void Segment::calculateHieghtChane(){
     }
 }
 
-void Segment::calculateL0(){
-
+void Segment::calculateSegment(){
+    calculateDistance();
+    sortNodesByDistanceFromStart();
+    calculateHieghtChane();
 }
 
 QString Segment::toString(){

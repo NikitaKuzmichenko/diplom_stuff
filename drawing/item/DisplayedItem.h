@@ -6,10 +6,10 @@
 #include <simulation/map/PhysicalPoint.h>
 
 enum ItemType{
-    Udefinde,
-    SegmentItem,
-    NodeItem,
-    WayPointItem
+    UNDEFINED,
+    SEGMENT_ITEM,
+    NODE_ITEM,
+    WAY_POINT_ITEM
 };
 
 class DisplayedItem{
@@ -33,8 +33,12 @@ public:
     QString getName();
     void setName(QString &value);
 
+    long getId();
+    void setId(long value);
+
+    ItemType type = ItemType::UNDEFINED;
 protected:
-    ItemType type = ItemType::Udefinde;
+    long id;
     QString name;
     QGraphicsItem *mainItem = nullptr;
     QGraphicsTextItem *text = nullptr;

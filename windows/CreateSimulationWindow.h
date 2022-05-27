@@ -30,6 +30,8 @@ private slots:
     void on_start_simulation_clicked();
     void on_back_to_menu_clicked();
 
+    void on_select_simulation_clicked();
+
 private:
     const int roundSceneIndent = 30;
 
@@ -40,6 +42,7 @@ private:
     bool mapPresent = false;
 
     QImage *bgImg;
+    QString simulationPath;
 
     GeographicGridLayer *layer;
     QGraphicsScene *scene;

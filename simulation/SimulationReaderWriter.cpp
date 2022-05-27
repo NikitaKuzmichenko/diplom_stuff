@@ -43,9 +43,9 @@ QList<NodePoint *>* SimulationReaderWriter::getNodePoints(long& id){
     while(!out.atEnd()){
         QString str = out.readLine();
         NodePoint *point = nodepointReaderWriter->getPointFromString(str);
-        point->setId(id);
-        id++;
         if(point != nullptr){
+            point->setId(id);
+            id++;
             result->append(point);
         }
     }
@@ -73,7 +73,6 @@ QList<WayPoint *> *SimulationReaderWriter::getWayPoints(long& id){
     while(!out.atEnd()){
 
         QString str = out.readLine();
-
         if(str.startsWith(start)){ // начало списка путевых точке
             startEncountered = true;
         }

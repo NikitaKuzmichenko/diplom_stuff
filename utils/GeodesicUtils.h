@@ -28,6 +28,8 @@ const double Rs_KAVR     = 6371100;     // Средний радиус Земл�
 const double Rs          = Rs_KAVR;     // этот радиус используется
 const double g           = 9.80665;
 
+const double maxDelta           = 0.0005;
+
 class InversGeoProblemSolution{
 public:
     double dist;    // в расстояние между двумя точками метрах
@@ -43,10 +45,12 @@ public:
     static double getPitсh(PhysicalPoint * start,PhysicalPoint * end);
     static bool isPointOnOrthodromy(PhysicalPoint *start,PhysicalPoint *end,PhysicalPoint *point);
 
+    static InversGeoProblemSolution inversGeopoblem(PhysicalPoint * start,PhysicalPoint * end);
+    static PhysicalPoint *directGeopoblem(PhysicalPoint * start,double azim, double dist);
+        
     static double toDeg(double rad);
     static double toRad(double deg);
 private:
-    static InversGeoProblemSolution inversGeopoblem(PhysicalPoint * start,PhysicalPoint * end);
     static double _reduce(double angle);
 };
 

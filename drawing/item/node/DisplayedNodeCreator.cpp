@@ -1,5 +1,6 @@
 #include "DisplayedNodeCreator.h"
 #include <QGraphicsPixmapItem>
+#include <QMetaEnum>
 
 DisplayedNodeCreator::DisplayedNodeCreator(){}
 
@@ -11,9 +12,11 @@ DisplayedNode *DisplayedNodeCreator::ceratePoint(NodePoint *node,QPointF positio
 
     DisplayedNode *displayedNode = new DisplayedNode(circle,node,position);
 
-    QString name;
-    name.append("P");
+    QString name = QString(QMetaEnum::fromType<NP::NodePointType>().valueToKey((node->type)));
+    name=name.left(name.lastIndexOf('_'));
     displayedNode->setName(name);
+    displayedNode->setId(node->getId());
+    displayedNode->setNode(node);
 
     return displayedNode;
 }

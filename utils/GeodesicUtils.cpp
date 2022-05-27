@@ -58,14 +58,11 @@ bool GeodesicUtils::isPointOnOrthodromy(PhysicalPoint *start, PhysicalPoint *end
     }
 
     double A0 = atan(tan(M_PI_2 - startlLat)*sin(startlLong - L0));
-
+    double difference = atan(sin(point->getLongitude() - L0) * tan(M_PI_2 - A0)) - point->getLatitude();
+    return difference < maxDelta && difference > maxDelta*(-1);
+            
 //    qInfo() << tan(point->getLatitude());
 //    qInfo() << sin(point->getLongitude() - L0) * tan(M_PI_2 - A0);
-
-    qInfo() << point->getLatitude();
-    qInfo() << atan(sin(point->getLongitude() - L0) * tan(M_PI_2 - A0));
-
-    qInfo() << point->getLatitude() - atan(sin(point->getLongitude() - L0) * tan(M_PI_2 - A0));
 }
 
 InversGeoProblemSolution GeodesicUtils::inversGeopoblem(PhysicalPoint *start, PhysicalPoint *end){
@@ -156,6 +153,61 @@ InversGeoProblemSolution GeodesicUtils::inversGeopoblem(PhysicalPoint *start, Ph
     sol.azim2 = _reduce(azim2); // в радианах
 
     return sol;
+}
+
+PhysicalPoint* GeodesicUtils::directGeopoblem(PhysicalPoint *start, double azim, double dist){
+    double lat = start->getLatitude();
+    azim = _reduce(azim);       // должен лежать в диапазоне [0.0 -- 360.0)
+    dist = _reduce(dist/Rs);    // приведем дистанцию вдоль ортодромии к углу \sigma [0.0 -- 360.0)
+
+    PhysicalPoint *result = new PhysicalPoint();
+    result->setHight(start->getHight());
+    result->setLatitude(start->getLatitude());
+    result->setLongitude(start->getLongitude());
+
+    // Если расстояние равно нулю, возвращаем копию исходной точки
+    if (dist == 0.0) {
+        return result;
+    }
+
+    // частные случаи
+    if (azim == 0) {
+        // вдоль меридиана на север
+        result->setLatitude(_reduce(start->getLatitude() + dist));
+        return result;
+    }
+    if (M_PI == azim) {
+        // вдоль меридиана на юг
+        result->setLatitude(_reduce(start->getLatitude() - dist));
+        return result;
+    }
+
+    // случай общего положения
+    double coslat = cos(lat);
+    double sinlat = sin(lat);
+
+    double sindist = sin(dist);
+    double cosdist = cos(dist);
+
+    double sinazim = sin(azim);
+    double cosazim = cos(azim);
+
+    // Вычисляем разность долгот
+    double p = sindist*sinazim;
+    double q = coslat*cosdist - sinlat*sindist*cosazim;
+    double lambda = _reduce(atan2(p, q));
+    // Вычисляем обратный азимут второй точки
+    p = -coslat*sinazim;
+    q = sinlat*sindist - coslat*cosdist*cosazim;
+    double azim2 = _reduce(atan2(p, q));
+    // теперь широта второй точки
+    p = sinlat*cosdist + coslat*sindist*cosazim;
+    q = -coslat*sinazim/sin(azim2);
+    double lat2 = atan2(p, q);
+
+    result->setLongitude(_reduce(start->getLongitude() + lambda));
+    result->setLatitude(lat2);
+    return result;
 }
 
 double GeodesicUtils::_reduce(double angle){

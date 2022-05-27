@@ -1,9 +1,8 @@
-QT       += core gui
+QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
-
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -24,17 +23,24 @@ SOURCES += \
     drawing/item/wayPoint/DisplayedWayPoint.cpp \
     drawing/item/wayPoint/DisplayedWayPointCreator.cpp \
     drawing/layers/GeographicGridLayer.cpp \
+    drawing/layers/HeightGridLayer.cpp \
     drawing/layers/LayerManager.cpp \
     drawing/layers/SelfDrawingLayer.cpp \
     drawing/layers/VisibleLayer.cpp \
     drawing/scene/ClicablePlaneScene.cpp \
+    drawing/scene/ClicableProfileScene.cpp \
     drawing/scene/ClicableScene.cpp \
     drawing/view/PlaneSimulationView.cpp \
     drawing/view/SimulationView.cpp \
-    drawing/view/SimulationViewTest.cpp \
     drawing/view/maper/PlaneViewMapper.cpp \
     drawing/view/maper/ProfileViewMapper.cpp \
     drawing/view/maper/ViewMapper.cpp \
+    input/SimulationTreeView.cpp \
+    input/UIItemIfo.cpp \
+    input/UIItemsManager.cpp \
+    input/UINodeInfo.cpp \
+    input/UISegmentInfo.cpp \
+    input/UIWayPointInfo.cpp \
     main.cpp \
     settings/Settings.cpp \
     settings/SettingsManager.cpp \
@@ -56,8 +62,6 @@ SOURCES += \
     simulation/segment/Segment.cpp \
     simulation/wayPoint/WayPoint.cpp \
     simulation/wayPoint/WayPointReaderWriter.cpp \
-    test1.cpp \
-    test2.cpp \
     utils/GeodesicUtils.cpp \
     utils/Utils.cpp \
     windows/CreateSimulationWindow.cpp \
@@ -74,17 +78,24 @@ HEADERS += \
     drawing/item/wayPoint/DisplayedWayPoint.h \
     drawing/item/wayPoint/DisplayedWayPointCreator.h \
     drawing/layers/GeographicGridLayer.h \
+    drawing/layers/HeightGridLayer.h \
     drawing/layers/LayerManager.h \
     drawing/layers/SelfDrawingLayer.h \
     drawing/layers/VisibleLayer.h \
     drawing/scene/ClicablePlaneScene.h \
+    drawing/scene/ClicableProfileScene.h \
     drawing/scene/ClicableScene.h \
     drawing/view/PlaneSimulationView.h \
     drawing/view/SimulationView.h \
-    drawing/view/SimulationViewTest.h \
     drawing/view/maper/PlaneViewMapper.h \
     drawing/view/maper/ProfileViewMapper.h \
     drawing/view/maper/ViewMapper.h \
+    input/SimulationTreeView.h \
+    input/UIItemIfo.h \
+    input/UIItemsManager.h \
+    input/UINodeInfo.h \
+    input/UISegmentInfo.h \
+    input/UIWayPointInfo.h \
     settings/Settings.h \
     settings/SettingsManager.h \
     simulation/Simulation.h \
@@ -107,8 +118,6 @@ HEADERS += \
     simulation/wayPoint/WayPoint.h \
     simulation/wayPoint/WayPointReadeRwriter.h \
     simulation/wayPoint/WayPointType.h \
-    test1.h \
-    test2.h \
     utils/GeodesicUtils.h \
     utils/Utils.h \
     windows/CreateSimulationWindow.h \
@@ -126,3 +135,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc

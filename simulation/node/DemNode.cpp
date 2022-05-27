@@ -1,14 +1,17 @@
 #include "DemNode.h"
 
 DemNode::DemNode() : NodePoint(){
+    path = QString();
     type = NP::DEM_NODE;
 }
 
 DemNode::DemNode(PhysicalPoint *point) : NodePoint(point){
+    path = QString();
     type = NP::DEM_NODE;
 }
 
 DemNode::DemNode(double longitude, double latitude, double height) : NodePoint(longitude,latitude,height) {
+    path = QString();
     type = NP::DEM_NODE;
 }
 

@@ -1,6 +1,7 @@
 #include "PlaneViewMapper.h"
 #include "QDebug"
 #include <utils/GeodesicUtils.h>
+
 PlaneViewMapper::PlaneViewMapper(){}
 
 PlaneViewMapper::PlaneViewMapper(QRect boundingRect){

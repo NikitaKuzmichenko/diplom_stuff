@@ -17,13 +17,13 @@ public:
     bool readSettings();
     bool writeSettings();
 
-    Settings *getSettings();
-    void setSettings(Settings *value);
+    static Settings *getSettings();
+    static void setSettings(Settings *value);
 
-    QPen getGrid_pen();
+    static QPen getGrid_pen();
 
 private:
-    Settings *settings;
+    static Settings *settings;
     QString path;
 };
 

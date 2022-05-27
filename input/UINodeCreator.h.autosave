@@ -1,8 +1,6 @@
 #ifndef UINODECREATOR_H
 #define UINODECREATOR_H
 
-#include "UIItemIfo.h"
-
 #include <QComboBox>
 #include <QGraphicsView>
 #include <QLabel>
@@ -11,10 +9,9 @@
 
 #include <simulation/Simulation.h>
 
-class UINodeInfo: public UIItemIfo{
+class UINodeCreator{
 public:
-   UINodeInfo(QGraphicsView *container,Simulation *simulation);
-   ~UINodeInfo();
+    UINodeCreator();
 
 private:
     // тип точки
@@ -53,7 +50,7 @@ private:
 
     // радиус угаол наклоа при повороте
     QLabel *zonLenLable;
-    QLineEdit *zonLenInput;
+    QLineEdit *zoonLenInput;
 
     QLabel *zonWidthLable;
     QLineEdit *zonWidthInput;
@@ -63,38 +60,17 @@ private:
 
     QLabel *filePathLable;
     QLineEdit *filePathInput;
-
- // segment id
-    QLabel *segmentIdLable;
-    QLineEdit *segmentIdInput;
 //===============================================
     QPushButton *saveButton;
+    QPushButton *resetButton;
 
-    NodePoint *node = nullptr;
+    QGraphicsView *container;
+    Simulation *simualtino;
 
-public slots :
-    void reset();
-    void save();
-    void typeChange(int index);
-public:
-    void hide();
-    void show();
-    void clearInputs();
-    void displayNode(NodePoint *node,NP::NodePointType type);
-    void displayButtons();
-    void hideButtons();
-private:
-    void displayTypedNode(NP::NodePointType type);
-    void displayGeneralInfo(NodePoint *node);
-    void displayClimbNode(NodePoint *node);
-    void displayDescendNode(NodePoint *node);
-    void displayCruiseNode(NodePoint *node);
-    void displayDemNode(NodePoint *node);
-    void displayImgNode(NodePoint *node);
-    void displayTakeOffNode(NodePoint *node);
-    void displayFinishNode(NodePoint *node);
-    void displayTurnNode(NodePoint *node);
-    void displayMarkerNode(NodePoint *node);
+    double inputHeight = 25;
+    double inputWidth = 100;
+    double lableWidth = 100;
+    double spaseBetween = 10;
 };
 
 #endif // UINODECREATOR_H

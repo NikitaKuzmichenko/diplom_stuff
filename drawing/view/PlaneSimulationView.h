@@ -9,14 +9,23 @@ public:
 
     bool updateNode(DisplayedNode *selectedNode, QPointF pos);
     bool moveNode(DisplayedNode *selectedNode, QPointF newPos);
-    void loadAllFromSimulation();
-    void loadPointFromSimulation(long id);
-    void loadSegmentFromSimulation(long id);
-    void loadWayPointFromSimulation(long id);
 
 protected:
-    PhysicalPoint *convertPositionTopoint(QPointF pos);
-    QPointF getPositionFromPoint(PhysicalPoint *pos);
+    PhysicalPoint *convertPositionToPoint(QPointF pos);
+    QPointF convertPointToPosition(PhysicalPoint *pos);
+
+    // SimulationView interface
+public slots:
+    void segmentWasCreated(long segmentId);
+    void segmentWasDeleted(long segmentId);
+    void segmentWasUpdated(long segmentId);
+    void nodeWasUpdated(long nodeId);
+    void nodeWasAddedToSegment(long nodeId, long segmentId);
+    void nodeWasCreated(long nodeId);
+    void nodeWasDeleted(long nodeId);
+
+    void wayPointWasDeleted(long id);
+    void wayPointWasCreated(long id);
 };
 
 #endif // PLANESIMULATIONVIEW_H

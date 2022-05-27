@@ -1,15 +1,18 @@
 #include "ImgNode.h"
 
 ImgNode::ImgNode() : NodePoint(){
+    path = QString();
     type = NP::IMG_NODE;
 }
 
 ImgNode::ImgNode(PhysicalPoint *point) : NodePoint(point){
+    path = QString();
     type = NP::IMG_NODE;
 }
 
 ImgNode::ImgNode(double longitude, double latitude, double height) : NodePoint(longitude,latitude,height) {
-     type = NP::IMG_NODE;
+    path = QString();
+    type = NP::IMG_NODE;
 }
 
 ImgNode::ImgNode(PhysicalPoint *point, double v, double azim, double len, double width,QString path) : NodePoint(point){

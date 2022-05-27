@@ -20,13 +20,13 @@ void SettingsWindow::on_backButton_clicked(){
 
 void SettingsWindow::on_saveButton_clicked(){
 
-    manager->getSettings()->setLines_in_grid(ui->GridLinesNumber->value());
-    manager->getSettings()->setGrid_line_size(ui->GridLineSize->value());
+    manager->getSettings()->lines_in_grid = ui->GridLinesNumber->value();
+    manager->getSettings()->grid_line_size = ui->GridLineSize->value();
 
     if(ui->GridLineColor->currentText().isEmpty()){
-       manager->getSettings()->setGrid_line_color(ui->GridLineColor->placeholderText());
+       manager->getSettings()->grid_line_color = ui->GridLineColor->placeholderText();
     }else{
-         manager->getSettings()->setGrid_line_color(ui->GridLineColor->currentText());
+         manager->getSettings()->grid_line_color = ui->GridLineColor->currentText();
     }
 
     this->getManager()->writeSettings();
@@ -36,9 +36,9 @@ void SettingsWindow::on_resetButton_clicked(){
     Settings *newSettins = new Settings();
     manager->setSettings(newSettins);
 
-    ui->GridLineSize->setValue(newSettins->getGrid_line_size());
-    ui->GridLinesNumber->setValue(newSettins->getLines_in_grid());
-    ui->GridLineColor->setCurrentText(newSettins->getGrid_line_color());
+    ui->GridLineSize->setValue(newSettins->grid_line_size);
+    ui->GridLinesNumber->setValue(newSettins->lines_in_grid);
+    ui->GridLineColor->setCurrentText(newSettins->grid_line_color);
 }
 
 QMainWindow *SettingsWindow::getStartWindow(){
@@ -51,17 +51,17 @@ void SettingsWindow::setStartWindow(QMainWindow *value){
 
 void SettingsWindow::setManager(SettingsManager *value){
 
-    ui->GridLineSize->setValue(value->getSettings()->getGrid_line_size());
-    ui->GridLinesNumber->setValue(value->getSettings()->getLines_in_grid());
+    ui->GridLineSize->setValue(value->getSettings()->grid_line_size);
+    ui->GridLinesNumber->setValue(value->getSettings()->lines_in_grid);
 
-    ui->GridLineSize->setMinimum(1);
-    ui->GridLineSize->setMaximum(20);
+    ui->GridLineColor->setPlaceholderText(value->getSettings()->grid_line_color);
 
-    ui->GridLinesNumber->setMinimum(2);
-    ui->GridLinesNumber->setMaximum(10);
-
-    ui->GridLineColor->setPlaceholderText(value->getSettings()->getGrid_line_color());
     ui->GridLineColor->addItems(colors);
+    ui->WayPointDescColor->addItems(colors);
+    ui->NodePointColor->addItems(colors);
+    ui->SegmentColor->addItems(colors);
+    ui->NodePointDescColor->addItems(colors);
+    ui->WayPointColor->addItems(colors);
 
     manager = value;
 }

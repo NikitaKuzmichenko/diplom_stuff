@@ -11,7 +11,7 @@ public:
     NodePoint();
     NodePoint(PhysicalPoint *point);
     NodePoint(double longitude,double latitude,double height);
-    ~NodePoint();
+    virtual ~NodePoint();
 
     long getId();
     void setId(long value);
@@ -22,7 +22,7 @@ public:
     PhysicalPoint *getPoint();
     void setPoint(PhysicalPoint *value);
 
-    void generateDefaultName();
+    QString generateDefaultName();
 
     NP::NodePointType type = NP::UNDEFINED_NODE; // тип точки
 

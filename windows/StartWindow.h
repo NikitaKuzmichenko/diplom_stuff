@@ -10,8 +10,7 @@ namespace Ui {
 class StartWindow;
 }
 
-class StartWindow : public QMainWindow
-{
+class StartWindow : public QMainWindow{
     Q_OBJECT
 
 public:
